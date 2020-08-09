@@ -1,0 +1,85 @@
+mutation RegisterAsDesigner($input: RegisterAsDesignerInput!) {
+  registerAsDesigner(input: $input) {
+    user: data {
+      ...User
+      designer {
+        ...Designer
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query Designers($sort: String, $paginate: PaginatorInput, $filter: FilterDesignerInput_board) {
+  designers_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      designers: items {
+        ...Designer
+        user {
+          ...User
+        }
+      }
+      pageInfo {
+        ...PageInfo
+      }
+    }
+  }
+}
+
+query DesignerById($designerId: String!) {
+  findDesignerById(designerId: $designerId) {
+    designer: data {
+      ...Designer
+      addresses {
+        ...Address
+      }
+      user {
+        ...User
+        addresses {
+          ...Address
+        }
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateDesigner($designerId: String!, $input: UpdateDesignerInput!) {
+  updateDesigner(designerId: $designerId, input: $input) {
+    designer: data {
+      ...Designer
+      addresses {
+        ...Address
+      }
+      user {
+        ...User
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+fragment Designer on Designer {
+  id
+  nameAr
+  nameEn
+  activated
+  rate
+  bio
+  certificates
+  createdAt
+  updatedAt
+}
+
+fragment DesignerRequest on DesignerRequest {
+  changedAt
+  status
+}

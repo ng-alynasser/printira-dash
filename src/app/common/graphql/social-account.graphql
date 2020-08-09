@@ -1,0 +1,7 @@
+fragment UserSocialAccount on UserSocialAccount {
+  id
+  provider
+  providerId
+  createdAt
+  updatedAt
+}

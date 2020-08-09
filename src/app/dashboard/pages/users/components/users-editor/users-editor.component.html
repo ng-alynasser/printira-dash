@@ -1,0 +1,313 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>person</mat-icon>
+      Edit Customer
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        type="button"
+        outline
+        status="basic"
+        (click)="goBack()"
+        size="small"
+      >
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+      <button
+        nbButton
+        type="button"
+        outline
+        status="info"
+        (click)="resetForm()"
+        size="small"
+      >
+        Reset
+        <mat-icon class="ml-2">settings_backup_restore</mat-icon>
+      </button>
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [nbSpinner]="submitLoading"
+        nbSpinnerStatus="success"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="usersEditorForm" novalidate autocomplete="new-password">
+      <section class="form">
+        <p class="form__title"><mat-icon>hdr_strong</mat-icon>Basic info</p>
+        <div class="row mb-3">
+          <div class="col-md-9 form__inputs">
+            <mat-form-field>
+              <mat-label>First name</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="fName"
+                autocomplete="new-password"
+                required
+              />
+              <mat-error *ngIf="isControlHasError('fName', 'required')">
+                First name is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('fName', 'minlength')">
+                Must be at least <strong>3 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('fName', 'maxlength')">
+                Must be at most <strong>26 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('fName', 'pattern')">
+                Must contain only <strong>letters and numbers</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Last name</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="lName"
+                autocomplete="new-password"
+                required
+              />
+              <mat-error *ngIf="isControlHasError('lName', 'required')">
+                Last name is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('lName', 'minlength')">
+                Must be at least <strong>3 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('lName', 'maxlength')">
+                Must be at most <strong>26 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('lName', 'pattern')">
+                Must contain only <strong>letters and numbers</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-checkbox formControlName="activated">Activated</mat-checkbox>
+            <mat-checkbox formControlName="blocked">Blocked</mat-checkbox>
+            <mat-form-field>
+              <mat-label>Gender</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option *ngFor="let gender of GENDERS" [value]="gender">
+                  {{ gender | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                type="email"
+                name="email"
+                formControlName="email"
+                autocomplete="new-password"
+                required
+              />
+              <mat-error *ngIf="isControlHasError('email', 'required')">
+                Email is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('email', 'email')">
+                Must be a <strong>valid email</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('email', 'minlength')">
+                Must be at least <strong>3 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('email', 'maxlength')">
+                Must be at most <strong>320 characters</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('email', 'takenEmail')">
+                Email already <strong>exists</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Phone</mat-label>
+              <span matPrefix class="mr-2">+2</span>
+              <input
+                matInput
+                type="text"
+                formControlName="phone"
+                autocomplete="new-password"
+                required
+              />
+              <mat-error *ngIf="isControlHasError('phone', 'required')">
+                Phone is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('phone', 'invalidPhone')">
+                <strong>Invalid</strong> phone number
+              </mat-error>
+              <mat-error *ngIf="isControlHasError('phone', 'takenPhone')">
+                Phone number already <strong>exists</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Date of birth</mat-label>
+              <input
+                matInput
+                formControlName="birthDate"
+                [matDatepicker]="picker"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Roles</mat-label>
+              <mat-select formControlName="roleId">
+                <mat-option [value]="null">Customer</mat-option>
+                <mat-option
+                  *ngFor="let role of roles$ | async"
+                  [value]="role.id"
+                >
+                  {{ role?.group?.replace("_", " ") | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <ng-container *ngIf="!previewImage; else previewHolder">
+              <img
+                style="width: 100%;"
+                [src]="
+                  (usersEditorForm?.controls)['avatar'].value ||
+                  '../../../../../../assets/images/placeholders/profile.svg'
+                "
+                alt="placeholder"
+              />
+            </ng-container>
+            <ng-template #previewHolder>
+              <img
+                style="width: 100%;"
+                [src]="previewImage"
+                alt="placeholder"
+                width="200"
+                height="200"
+              />
+            </ng-template>
+            <input
+              type="file"
+              #fileInput
+              (change)="uploadImage($event)"
+              style="display: none;"
+            />
+            <button
+              nbButton
+              type="button"
+              outline
+              fullWidth
+              size="small"
+              status="primary"
+              class="mt-2"
+              (click)="fileInput.click()"
+            >
+              Attach Avatar
+              <mat-icon class="ml-3">attach_file</mat-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="form">
+        <p class="form__title"><mat-icon>hdr_strong</mat-icon>Address info</p>
+        <div
+          class="row mb-3"
+          formArrayName="addresses"
+          *ngFor="
+            let userAddress of (usersEditorForm?.controls?.addresses)[
+              'controls'
+            ];
+            let i = index
+          "
+        >
+          <div class="col-md-12 form__inputs" [formGroupName]="i">
+            <mat-form-field>
+              <mat-label>Country</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="country"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>City</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="city"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Suburb</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="suburb"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Postal Code</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="postalCode"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <mat-form-field style="width: 85%;">
+              <mat-label>Address</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="address"
+                autocomplete="new-password"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  userAddress.controls['address'].hasError('required') &&
+                  (userAddress.dirty || userAddress.touched)
+                "
+              >
+                Address is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <a
+              *ngIf="i !== 0"
+              (click)="removeAddress(i)"
+              style="cursor: pointer;"
+            >
+              <mat-icon style="color: red; font-size: 2rem;"
+                >delete_outline</mat-icon
+              >
+            </a>
+          </div>
+        </div>
+        <button
+          nbButton
+          outline
+          type="button"
+          status="primary"
+          size="small"
+          class="add-address-button"
+          (click)="addAddress()"
+        >
+          Add Address
+          <mat-icon class="ml-2">add</mat-icon>
+        </button>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

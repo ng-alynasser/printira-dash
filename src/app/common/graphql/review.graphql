@@ -1,0 +1,47 @@
+query Reviews(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterReviewInput
+) {
+  reviews_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      reviews: items {
+        ...Review
+        user {
+          ...User
+        }
+        product {
+          ...Product
+        }
+        vendor {
+          ...Vendor
+        }
+      }
+      pageInfo {
+        ...PageInfo
+      }
+    }
+
+    success
+    message
+    code
+  }
+}
+
+mutation DeleteReview($reviewId: String!) {
+  deleteReview(reviewId: $reviewId) {
+    code
+    success
+    message
+  }
+}
+
+fragment Review on Review {
+  id
+  message
+  rate
+  seen
+  type
+  createdAt
+  updatedAt
+}

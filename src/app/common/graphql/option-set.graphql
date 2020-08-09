@@ -1,0 +1,32 @@
+query OptionSets(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterOptionSetInput_board
+) {
+  optionSets_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      optionSets: items {
+        ...OptionSet
+        options {
+          ...Option
+          prices {
+            ...OptionPricing
+          }
+        }
+      }
+      pageInfo {
+        ...PageInfo
+      }
+    }
+    success
+    code
+    message
+  }
+}
+
+fragment OptionSet on OptionSet {
+  id
+  nameAr
+  nameEn
+  type
+}

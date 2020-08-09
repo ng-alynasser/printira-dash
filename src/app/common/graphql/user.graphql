@@ -1,0 +1,172 @@
+query GetCurrentUser {
+  getCurrentUser {
+    user: data {
+      ...User
+      role {
+        ...Role
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query UserById($userId: String!) {
+  findUserById(userId: $userId) {
+    user: data {
+      ...User
+      addresses {
+        ...Address
+      }
+      role {
+        ...Role
+      }
+      reviews {
+        ...Review
+      }
+      vendor {
+        ...Vendor
+        addresses {
+          ...Address
+        }
+      }
+      designer {
+        ...Designer
+      }
+    }
+
+    code
+    message
+    success
+  }
+}
+
+mutation Login($input: EmailPasswordLoginInput!) {
+  login(input: $input) {
+    user: data {
+      ...User
+      role {
+        ...Role
+      }
+      vendor {
+        ...Vendor
+      }
+      designer {
+        ...Designer
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query Users(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterUserInput_board
+) {
+  users_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      users: items {
+        ...User
+        role {
+          ...Role
+        }
+        vendor {
+          ...Vendor
+        }
+        designer {
+          ...Designer
+        }
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query UserByEmail($userEmail: String!) {
+  findUserByEmail(userEmail: $userEmail) {
+    user: data {
+      ...User
+    }
+    code
+    success
+    message
+  }
+}
+
+query UserByPhone($userPhone: String!) {
+  findUserByPhone(userPhone: $userPhone) {
+    user: data {
+      ...User
+    }
+    code
+    success
+    message
+  }
+}
+
+mutation RegisterAsUser($input: RegisterAsUserInput!) {
+  registerAsUser(input: $input) {
+    user: data {
+      ...User
+    }
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateUser($userId: String!, $input: UpdateUserInput!) {
+  updateUserProfile_board(userId: $userId, input: $input) {
+    user: data {
+      ...User
+    }
+    code
+    success
+    message
+  }
+}
+
+fragment User on User {
+  id
+  fName
+  lName
+  email
+  birthDate
+  favLang
+  gender
+  phone
+  wallet
+  slug
+  type
+  avatar
+  resetPasswordCode
+  resetPasswordCodeExpiry
+  isPhoneVerified
+  isEmailVerified
+  phoneVerificationCode
+  token
+  lastLoginAt
+  phoneVerificationCodeExpiry
+  emailVerificationCode
+  emailVerificationCodeExpiry
+  blocked
+  activated
+  createdAt
+  updatedAt
+}
+
+fragment PageInfo on PageInfo {
+  totalCount
+  totalPages
+  limit
+  hasNext
+}

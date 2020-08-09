@@ -1,0 +1,87 @@
+<nb-card>
+  <nb-card-header class="row table-header">
+    <div class="table-header__icon">
+      <mat-icon>question_answer</mat-icon>
+      FAQ
+    </div>
+    <button
+      nbButton
+      appearance="outline"
+      status="basic"
+      shape="semi-round"
+      size="small"
+      (click)="newFaq()"
+    >
+      New FAQ
+      <mat-icon>queue</mat-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <div
+      [nbSpinner]="dataSource.loading$ | async"
+      nbSpinnerSize="giant"
+      nbSpinnerStatus="primary"
+    >
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortDirection="desc"
+        matSortDisableClear
+      >
+        <ng-container matColumnDef="titleAr">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Question In Arabic
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.titleAr | stringToDots }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="titleEn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Question In English
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.titleEn | stringToDots }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="activated">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Status
+          </th>
+          <td mat-cell *matCellDef="let row" class="label label-lg">
+            <span [activeStatus]="true">{{ row?.activated }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Created At
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.createdAt | date: "MMMM d, h:mm a" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-cell *matCellDef="let row" class="action-link">
+            <a (click)="showEdit(row)" title="Edit" class="edit-button">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      [pageSize]="15"
+      [length]="dataSource.totalCount$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
+  </nb-card-body>
+</nb-card>

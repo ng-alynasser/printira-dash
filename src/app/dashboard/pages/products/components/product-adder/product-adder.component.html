@@ -1,0 +1,321 @@
+<nb-card>
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>queue</mat-icon>
+      New Product
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        type="button"
+        outline
+        status="basic"
+        (click)="goBack()"
+        size="small"
+      >
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+      <button
+        nbButton
+        type="button"
+        outline
+        status="info"
+        (click)="resetForm()"
+        size="small"
+      >
+        Reset
+        <mat-icon class="ml-2">settings_backup_restore</mat-icon>
+      </button>
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [disabled]="productAdderForm.invalid"
+        [nbSpinner]="submitLoading"
+        nbSpinnerStatus="success"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      class="example-form"
+      [formGroup]="productAdderForm"
+      novalidate
+      autocomplete="new-password"
+    >
+      <section class="form">
+        <p class="form__title"><mat-icon>hdr_strong</mat-icon>Basic info</p>
+        <div class="row mb-3">
+          <div class="col-md-9 form__inputs">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Search the assigned sub category by name</mat-label>
+              <input
+                matInput
+                type="text"
+                #subCategorySearch
+                formControlName="subCategory"
+                [matAutocomplete]="autoSubCategory"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #autoSubCategory="matAutocomplete"
+                [displayWith]="displaySubCategoryFn"
+              >
+                <mat-option
+                  *ngFor="let subcategory of subCategories$ | async"
+                  [value]="subcategory"
+                >
+                  {{ subcategory?.nameEn }} - {{ subcategory?.nameAr }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="isControlHasError('subCategory', 'required')">
+                Sub category is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field style="width: 45%;">
+              <mat-label>Name in arabic</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nameAr"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="isControlHasError('nameAr', 'required')">
+                Name in arabic is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 45%;">
+              <mat-label>Name in english</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nameEn"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="isControlHasError('nameEn', 'required')">
+                Name in english is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 75%;">
+              <mat-label>URL</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="url"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <nb-checkbox formControlName="featured">Featured</nb-checkbox>
+
+            <mat-form-field>
+              <mat-label>Stock</mat-label>
+              <input
+                matInput
+                type="number"
+                formControlName="stock"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>SKU</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="sku"
+                autocomplete="new-password"
+              />
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Description in arabic</mat-label>
+              <textarea
+                matInput
+                rows="3"
+                formControlName="descriptionAr"
+                autocomplete="new-password"
+              ></textarea>
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Description in english</mat-label>
+              <textarea
+                matInput
+                rows="3"
+                formControlName="descriptionEn"
+                autocomplete="new-password"
+              ></textarea>
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Search the assigned art by name</mat-label>
+              <input
+                matInput
+                type="text"
+                #artSearch
+                formControlName="art"
+                [matAutocomplete]="autoArt"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #autoArt="matAutocomplete"
+                [displayWith]="displayArtFn"
+              >
+                <mat-option *ngFor="let art of arts$ | async" [value]="art">
+                  {{ art?.nameEn }} - {{ art?.nameAr }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="isControlHasError('art', 'required')">
+                Art is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Search the assigned mockup by name</mat-label>
+              <input
+                matInput
+                type="text"
+                #mockupSearch
+                formControlName="mockup"
+                [matAutocomplete]="autoMockup"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #autoMockup="matAutocomplete"
+                [displayWith]="displayMockupFn"
+              >
+                <mat-option
+                  *ngFor="let mockup of mockups$ | async"
+                  [value]="mockup"
+                >
+                  {{ mockup?.nameEn }} - {{ mockup?.nameAr }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="isControlHasError('mockup', 'required')">
+                Mockup is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-chip-list #optionsList>
+                <mat-chip
+                  *ngFor="let option of optionChips"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  (removed)="removeOption(option)"
+                >
+                  {{ option }}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input
+                  placeholder="Search the assigned options by name"
+                  #optionSearch
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="optionsList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="addOption($event)"
+                />
+              </mat-chip-list>
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selected($event)"
+              >
+                <mat-option
+                  *ngFor="let filteredOption of filteredOptions$ | async"
+                  [value]="filteredOption"
+                >
+                  {{ filteredOption.nameEn }} - {{ filteredOption.nameAr }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <ng-container *ngIf="!previewImage; else previewHolder">
+              <img
+                style="width: 100%;"
+                src="../../../../../../assets/images/placeholders/jpg.svg"
+                alt="placeholder"
+              />
+            </ng-container>
+            <ng-template #previewHolder>
+              <img
+                style="width: 100%;"
+                [src]="previewImage"
+                alt="placeholder"
+                width="200"
+                height="200"
+              />
+            </ng-template>
+            <input
+              type="file"
+              #fileInput
+              (change)="uploadThumbnail($event)"
+              style="display: none;"
+            />
+            <button
+              nbButton
+              type="button"
+              outline
+              fullWidth
+              size="small"
+              status="primary"
+              class="mt-2"
+              (click)="fileInput.click()"
+            >
+              Attach Thumbnail
+              <mat-icon class="ml-3">attach_file</mat-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="form">
+        <p class="form__title"><mat-icon>hdr_strong</mat-icon>Extra info</p>
+
+        <mat-form-field style="width: 100%;">
+          <mat-chip-list #detailsList>
+            <mat-chip
+              *ngFor="let detail of details"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeDetail(detail)"
+            >
+              {{ detail }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Details..."
+              [matChipInputFor]="detailsList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="addDetail($event)"
+            />
+          </mat-chip-list>
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%;">
+          <mat-chip-list #featuresList>
+            <mat-chip
+              *ngFor="let feature of features"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="removeFeature(feature)"
+            >
+              {{ feature }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Features..."
+              [matChipInputFor]="featuresList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="addFeature($event)"
+            />
+          </mat-chip-list>
+        </mat-form-field>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

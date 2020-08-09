@@ -1,0 +1,160 @@
+query Products(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterProductInput_board
+) {
+  products_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      products: items {
+        ...Product
+        options {
+          ...Option
+          optionSet {
+            ...OptionSet
+          }
+          prices {
+            ...OptionPricing
+          }
+        }
+        reviews {
+          ...Review
+        }
+        subCategory {
+          ...SubCategory
+        }
+        mockup {
+          ...Product
+        }
+        products {
+          ...Product
+        }
+        art {
+          ...Art
+        }
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query ProductsBySubCategory(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterProductInput_board
+  $subCategoryId: String!
+) {
+  productsBySubCategory_board(
+    sort: $sort
+    paginate: $paginate
+    filter: $filter
+    subCategoryId: $subCategoryId
+  ) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      products: items {
+        ...Product
+        options {
+          ...Option
+          optionSet {
+            ...OptionSet
+          }
+          prices {
+            ...OptionPricing
+          }
+        }
+        reviews {
+          ...Review
+        }
+        subCategory {
+          ...SubCategory
+        }
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query ProductById($productId: String!) {
+  findProductById(productId: $productId) {
+    data {
+      ...Product
+      options {
+        ...Option
+        optionSet {
+          ...OptionSet
+        }
+        prices {
+          ...OptionPricing
+        }
+      }
+      reviews {
+        ...Review
+      }
+      subCategory {
+        ...SubCategory
+      }
+      mockup {
+        ...Product
+      }
+      products {
+        ...Product
+      }
+      art {
+        ...Art
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+mutation CreateProduct($input: CreateProductInput!) {
+  createProduct(input: $input) {
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateProduct($productId: String!, $input: UpdateProductInput!) {
+  updateProduct(productId: $productId, input: $input) {
+    code
+    success
+    message
+  }
+}
+
+fragment Product on Product {
+  id
+  sku
+  nameAr
+  nameEn
+  descriptionAr
+  descriptionEn
+  slug
+  url
+  views
+  quantity
+  thumbnails
+  details
+  features
+  price
+  weight
+  stock
+  activated
+  rate
+  featured
+  samplable
+  createdAt
+  updatedAt
+}

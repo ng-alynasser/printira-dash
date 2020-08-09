@@ -1,0 +1,140 @@
+<nb-card [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>edit</mat-icon>
+      Edit Option
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        type="button"
+        outline
+        status="basic"
+        (click)="goBack()"
+        size="small"
+      >
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+      <button
+        nbButton
+        type="button"
+        outline
+        status="info"
+        (click)="resetForm()"
+        size="small"
+      >
+        Reset
+        <mat-icon class="ml-2">settings_backup_restore</mat-icon>
+      </button>
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [disabled]="optionEditorForm.invalid"
+        [nbSpinner]="submitLoading"
+        nbSpinnerStatus="success"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      class="example-form"
+      [formGroup]="optionEditorForm"
+      novalidate
+      autocomplete="new-password"
+    >
+      <section class="form">
+        <p class="form__title"><mat-icon>hdr_strong</mat-icon>Basic info</p>
+        <div class="row">
+          <div class="col-md-9 form__inputs">
+            <mat-form-field style="width: 70%;">
+              <mat-label>Option set type</mat-label>
+              <mat-select formControlName="optionSetId">
+                <mat-option
+                  *ngFor="let optionSet of optionSets$ | async"
+                  [value]="optionSet.id"
+                >
+                  {{ optionSet?.type | titlecase }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isControlHasError('optionSetId', 'required')">
+                Option set is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 45%;">
+              <mat-label>Name in arabic</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nameAr"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="isControlHasError('nameAr', 'required')">
+                Name in arabic is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 45%;">
+              <mat-label>Name in english</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nameEn"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="isControlHasError('nameEn', 'required')">
+                Name in english is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <ng-container *ngIf="!previewImage; else previewHolder">
+              <img
+                style="width: 100%;"
+                [src]="
+                  optionEditorForm.controls['thumbnail'].value ||
+                  '../../../../../../assets/images/placeholders/jpg.svg'
+                "
+                alt="placeholder"
+              />
+            </ng-container>
+            <ng-template #previewHolder>
+              <img
+                style="width: 100%;"
+                [src]="previewImage"
+                alt="placeholder"
+                width="200"
+                height="200"
+              />
+            </ng-template>
+            <input
+              type="file"
+              #fileInput
+              (change)="uploadThumbnail($event)"
+              style="display: none;"
+            />
+            <button
+              nbButton
+              type="button"
+              outline
+              fullWidth
+              size="small"
+              status="primary"
+              class="mt-2"
+              (click)="fileInput.click()"
+            >
+              Attach Thumbnail
+              <mat-icon class="ml-3">attach_file</mat-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

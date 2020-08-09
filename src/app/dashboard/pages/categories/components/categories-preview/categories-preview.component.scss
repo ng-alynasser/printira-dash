@@ -1,0 +1,8 @@
+.subcategory-table-header {
+  display: flex;
+  justify-content: space-around;
+  &__search {
+    width: 45%;
+    padding-top: 1rem;
+  }
+}

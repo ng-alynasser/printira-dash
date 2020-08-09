@@ -1,0 +1,32 @@
+mutation CreateAddress($input: CreateAddressInput!) {
+  addUserAddress(input: $input) {
+    code
+    success
+    message
+  }
+}
+
+mutation DeleteAddress($addressId: String!) {
+  deleteUserAddress(addressId: $addressId) {
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateAddress($input: UpdateAddressInput!) {
+  updateUserAddress(input: $input) {
+    success
+    message
+    code
+  }
+}
+
+fragment Address on Address {
+  id
+  address
+  suburb
+  postalCode
+  city
+  country
+}

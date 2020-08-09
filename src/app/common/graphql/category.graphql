@@ -1,0 +1,145 @@
+query Categories(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterCategoryInput_board
+) {
+  categories_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      categories: items {
+        ...Category
+        subCategories {
+          ...SubCategory
+        }
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query CategoryById($categoryId: String!) {
+  findCategoryById(categoryId: $categoryId) {
+    category: data {
+      ...Category
+      subCategories {
+        ...SubCategory
+      }
+      vendor {
+        ...Vendor
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+query SubCategoryById($subCategoryId: String!) {
+  findSubCategoryById(subCategoryId: $subCategoryId) {
+    subcategory: data {
+      ...SubCategory
+      category {
+        ...Category
+      }
+      products {
+        ...Product
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateCategory($categoryId: String!, $input: UpdateCategoryDto!) {
+  updateCategory(categoryId: $categoryId, input: $input) {
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateSubCategory(
+  $categoryId: String!
+  $input: UpdateSubCategoryDto!
+) {
+  updateSubCategory(categoryId: $categoryId, input: $input) {
+    code
+    success
+    message
+  }
+}
+
+query SubCategories(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterCategoryInput_board
+) {
+  subCategories_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      subCategories: items {
+        ...SubCategory
+        products {
+          ...Product
+        }
+        category {
+          ...Category
+        }
+      }
+    }
+    success
+    code
+    message
+  }
+}
+
+mutation CreateCategory($input: CreateCategoryDto!) {
+  createCategory(input: $input) {
+    success
+    code
+    message
+  }
+}
+
+mutation CreateSubCategory($input: CreateSubCategoryDto!) {
+  createSubCategory(input: $input) {
+    success
+    code
+    message
+  }
+}
+
+fragment Category on Category {
+  id
+  slug
+  nameAr
+  nameEn
+  descriptionAr
+  descriptionEn
+  thumbnail
+  activated
+  createdAt
+  updatedAt
+}
+
+fragment SubCategory on SubCategory {
+  id
+  slug
+  nameAr
+  nameEn
+  descriptionAr
+  descriptionEn
+  thumbnail
+  activated
+  createdAt
+  updatedAt
+}

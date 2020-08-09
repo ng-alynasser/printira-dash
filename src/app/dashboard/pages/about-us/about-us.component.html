@@ -1,0 +1,47 @@
+<nb-card>
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>history_edu</mat-icon>
+      About Us
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [disabled]="aboutUsForm.invalid"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      class="example-form"
+      [formGroup]="aboutUsForm"
+      novalidate
+      autocomplete="new-password"
+    >
+      <section>
+        <div class="row mb-3">
+          <ckeditor
+            formControlName="contentAr"
+            name="contentAr"
+            type="divarea"
+            [config]="{ height: '400' }"
+          ></ckeditor>
+          <ckeditor
+            formControlName="contentAr"
+            name="contentAr"
+            type="divarea"
+            [config]="{ height: '400' }"
+          ></ckeditor>
+        </div>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

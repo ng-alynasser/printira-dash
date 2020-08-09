@@ -1,0 +1,138 @@
+<nb-card>
+  <nb-card-header class="row table-header">
+    <div class="table-header__icon">
+      <mat-icon>people</mat-icon>
+      Customers
+    </div>
+    <mat-form-field appearance="outline" class="table-header__search">
+      <mat-label>Search for a customer</mat-label>
+      <input matInput #searchInput />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <button
+      nbButton
+      appearance="outline"
+      status="basic"
+      shape="semi-round"
+      size="small"
+      (click)="newUser()"
+    >
+      New Customer
+      <mat-icon>person_add</mat-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <div
+      [nbSpinner]="dataSource.loading$ | async"
+      nbSpinnerSize="giant"
+      nbSpinnerStatus="primary"
+    >
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortDirection="desc"
+        matSortDisableClear
+      >
+        <ng-container matColumnDef="avatar">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Avatar
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="row?.avatar; else placeHolder">
+              <img [src]="row?.avatar" alt="avatar" class="placeholder mr-3" />
+            </ng-container>
+            <ng-template #placeHolder>
+              <img
+                src="../../../../../../assets/images/placeholders/profile-placeholder.jpg"
+                alt="placeholder"
+                class="placeholder mr-3"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- First name column -->
+        <ng-container matColumnDef="fName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            First name
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.fName }}</td>
+        </ng-container>
+
+        <!-- Last name column -->
+        <ng-container matColumnDef="lName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Last name
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.lName }}</td>
+        </ng-container>
+
+        <!-- Email column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Email
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <span class="mr-3">{{ row?.email }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Gender column -->
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Gender
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row.gender | titlecase }}</td>
+        </ng-container>
+
+        <!-- Status column -->
+        <ng-container matColumnDef="activated">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Status
+          </th>
+          <td mat-cell *matCellDef="let row" class="label">
+            <span [activeStatus]="true" class="mr-3">{{ row?.activated }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Role colum-->
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Role
+          </th>
+          <td mat-cell *matCellDef="let row" class="label label-lg">
+            <span [userRole]="row" class="mr-3">{{ row?.type }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Last login at column -->
+        <ng-container matColumnDef="lastLoginAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Last login
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.lastLoginAt | date: "MMMM d, h:mm a" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-cell *matCellDef="let row" class="action-link">
+            <a (click)="showEdit(row)" title="Edit" class="edit-button">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      [pageSize]="15"
+      [length]="dataSource.totalCount$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,26 @@
+query Messages(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterMessageInput
+) {
+  messages(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      messages: items {
+        ...Message
+      }
+    }
+    message
+    code
+    success
+  }
+}
+
+fragment Message on Message {
+  id
+  content
+  name
+  email
+  phone
+  address
+  createdAt
+}

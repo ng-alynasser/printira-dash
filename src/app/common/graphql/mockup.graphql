@@ -1,0 +1,72 @@
+query Mockups(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterProductInput_board
+) {
+  mockups_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      mockups: items {
+        ...Product
+        options {
+          ...Option
+        }
+        reviews {
+          ...Review
+        }
+        subCategory {
+          ...SubCategory
+        }
+      }
+
+      pageInfo {
+        ...PageInfo
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+query MockupById($productId: String!) {
+  findProductById(productId: $productId) {
+    data {
+      ...Product
+      options {
+        ...Option
+        optionSet {
+          ...OptionSet
+        }
+        prices {
+          ...OptionPricing
+        }
+      }
+      subCategory {
+        ...SubCategory
+      }
+      products {
+        ...Product
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+mutation CreateMockup($input: CreateMockupInput!) {
+  createMockup(input: $input) {
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateMockup($mockupId: String!, $input: UpdateProductInput!) {
+  updateMockup(mockupId: $mockupId, input: $input) {
+    code
+    success
+    message
+  }
+}

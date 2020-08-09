@@ -1,0 +1,6 @@
+fragment OptionPricing on OptionPricing {
+  price
+  activated
+  createdAt
+  updatedAt
+}

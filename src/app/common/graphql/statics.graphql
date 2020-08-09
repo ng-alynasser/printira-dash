@@ -1,0 +1,102 @@
+query Statics(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterStaticInput_board
+) {
+  statics_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      statics: items {
+        ...Static
+        values {
+          ...StaticValue
+        }
+      }
+      pageInfo {
+        ...PageInfo
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query StaticValuesByType(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterStaticValueInput_board
+  $input: staticKeyInput!
+) {
+  getStaticValuesByType_board(
+    sort: $sort
+    paginate: $paginate
+    filter: $filter
+    input: $input
+  ) {
+    data {
+      staticValues: items {
+        ...StaticValue
+        static {
+          ...Static
+        }
+      }
+      pageInfo {
+        ...PageInfo
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query StaticValueById($staticValueId: String!) {
+  findStaticValueById(staticValueId: $staticValueId) {
+    data {
+      ...StaticValue
+      static {
+        ...Static
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+mutation CreateStaticValue($input: CreateStaticValueInput!) {
+  createStaticValue(input: $input) {
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateStaticValue($input: UpdateStaticValueInput!) {
+  updateStaticValue(input: $input) {
+    code
+    message
+    success
+  }
+}
+
+fragment Static on Static {
+  id
+  key
+  descriptionAr
+  descriptionEn
+}
+
+fragment StaticValue on StaticValue {
+  id
+  slug
+  titleAr
+  titleEn
+  contentAr
+  contentEn
+  thumbnail
+  activated
+  createdAt
+  updatedAt
+}

@@ -1,0 +1,86 @@
+<nb-card>
+  <nb-card-header class="row table-header">
+    <div class="table-header__icon">
+      <mat-icon>rate_review</mat-icon>
+      Reviews
+    </div>
+    <mat-form-field appearance="outline" class="table-header__search">
+      <mat-label>Search for a review</mat-label>
+      <input matInput #searchInput />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </nb-card-header>
+  <nb-card-body>
+    <div
+      [nbSpinner]="dataSource.loading$ | async"
+      nbSpinnerSize="giant"
+      nbSpinnerStatus="primary"
+    >
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortDirection="desc"
+        matSortDisableClear
+      >
+        <ng-container matColumnDef="user">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Reviewer
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.user?.fName }} {{ row?.user?.lName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="product">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Product
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.nameAr || "-" }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="vendor">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Vendor
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.nameAr || "-" }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Type
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.type || "-" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Created At
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.createdAt | date: "MMMM d, h:mm a" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-cell *matCellDef="let row" class="action-link">
+            <a title="Edit" class="edit-button">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      [pageSize]="15"
+      [length]="dataSource.totalCount$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
+  </nb-card-body>
+</nb-card>

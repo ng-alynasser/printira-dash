@@ -1,0 +1,126 @@
+<nb-card>
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>control_point</mat-icon>
+      New Article
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        type="button"
+        outline
+        status="basic"
+        (click)="goBack()"
+        size="small"
+      >
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+      <button
+        nbButton
+        type="button"
+        outline
+        status="info"
+        (click)="resetForm()"
+        size="small"
+      >
+        Reset
+        <mat-icon class="ml-2">settings_backup_restore</mat-icon>
+      </button>
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [disabled]="articleAdderForm.invalid"
+        [nbSpinner]="submitLoading"
+        nbSpinnerStatus="success"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      class="example-form"
+      [formGroup]="articleAdderForm"
+      novalidate
+      autocomplete="new-password"
+    >
+      <section>
+        <div class="row mb-3">
+          <div class="col-md-9 form-section-fields">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Title in arabic</mat-label>
+              <input matInput type="text" formControlName="titleAr" />
+            </mat-form-field>
+            <mat-error *ngIf="isControlHasError('titleAr', 'required')">
+              Title in arabic is <strong>required</strong>
+            </mat-error>
+            <ckeditor
+              formControlName="contentAr"
+              name="contentAr"
+              type="divarea"
+              [config]="{ height: '400' }"
+            ></ckeditor>
+
+            <mat-form-field style="width: 100%;" class="mt-3">
+              <mat-label>Title in english</mat-label>
+              <input matInput type="text" formControlName="titleEn" />
+              <mat-error *ngIf="isControlHasError('titleEn', 'required')">
+                Title in english is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <ckeditor
+              formControlName="contentEn"
+              name="contentEN"
+              type="divarea"
+              [config]="{ height: '400' }"
+            ></ckeditor>
+          </div>
+          <div class="col-md-3 upload-avatar">
+            <ng-container *ngIf="!previewImage; else previewHolder">
+              <img
+                style="width: 100%;"
+                src="../../../../../../assets/images/placeholders/jpg.svg"
+                alt="placeholder"
+              />
+            </ng-container>
+            <ng-template #previewHolder>
+              <img
+                style="width: 100%;"
+                [src]="previewImage"
+                alt="placeholder"
+                width="200"
+                height="200"
+              />
+            </ng-template>
+            <input
+              type="file"
+              #fileInput
+              (change)="uploadThumbnail($event)"
+              style="display: none;"
+            />
+            <button
+              nbButton
+              type="button"
+              outline
+              fullWidth
+              size="small"
+              status="primary"
+              class="mt-2"
+              (click)="fileInput.click()"
+            >
+              Attach Thumbnail
+              <mat-icon class="ml-3">attach_file</mat-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,46 @@
+query Roles(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: RoleFilterInput
+) {
+  roles_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      roles: items {
+        ...Role
+      }
+      pageInfo {
+        ...PageInfo
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+mutation UpdatePermissions($input: UpdateRoleInput!, $roleId: String!) {
+  updateRolePermissions(input: $input, roleId: $roleId) {
+    code
+    success
+    message
+  }
+}
+
+query RoleById($roleId: String!) {
+  findRoleById(roleId: $roleId) {
+    role: data {
+      ...Role
+    }
+
+    code
+    success
+    message
+  }
+}
+
+fragment Role on Role {
+  id
+  group
+  description
+  permissions
+}

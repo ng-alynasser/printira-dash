@@ -1,0 +1,58 @@
+<nb-card>
+  <nb-card-header class="row table-header">
+    <div class="table-header__icon">
+      <mat-icon>enhanced_encryption</mat-icon>
+      Permissions
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div
+      [nbSpinner]="dataSource.loading$ | async"
+      nbSpinnerSize="giant"
+      nbSpinnerStatus="primary"
+    >
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortDirection="desc"
+        matSortDisableClear
+      >
+        <ng-container matColumnDef="group">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Title
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <span class="role-title">{{ row?.group | roleTitle }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Description
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.description }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-cell *matCellDef="let row" class="action-link">
+            <a (click)="showEdit(row)" title="Edit" class="edit-button">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      [pageSize]="15"
+      [length]="dataSource.totalCount$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,130 @@
+<nb-card>
+  <nb-card-header class="row table-header">
+    <div class="table-header__icon">
+      <mat-icon>photo_library </mat-icon>
+      Mockups
+    </div>
+    <mat-form-field appearance="outline" class="table-header__search">
+      <mat-label>Search for a mockup</mat-label>
+      <input matInput #searchInput />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <button
+      nbButton
+      appearance="outline"
+      status="basic"
+      shape="semi-round"
+      size="small"
+      (click)="newMockup()"
+    >
+      New Mockup
+      <mat-icon>add_a_photo </mat-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <div
+      [nbSpinner]="dataSource.loading$ | async"
+      nbSpinnerSize="giant"
+      nbSpinnerStatus="primary"
+    >
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        matSortDirection="desc"
+        matSortDisableClear
+      >
+        <ng-container matColumnDef="thumbnails">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Thumbnail
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <ng-container *ngIf="row?.thumbnails; else placeHolder">
+              <img
+                [src]="(row?.thumbnails)[0]"
+                alt="thumbnails"
+                class="placeholder"
+              />
+            </ng-container>
+            <ng-template #placeHolder>
+              <img
+                src="../../../../../../assets/images/placeholders/file@2x.png"
+                alt="placeholder"
+                class="placeholder"
+              />
+            </ng-template>
+          </td>
+        </ng-container>
+        <!-- SKU column-->
+        <ng-container matColumnDef="sku">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            SKU
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.sku }}</td>
+        </ng-container>
+        <!-- NameAr column -->
+        <ng-container matColumnDef="nameAr">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Name In Arabic
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.nameAr }}</td>
+        </ng-container>
+
+        <!-- NameEn column -->
+        <ng-container matColumnDef="nameEn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Name In English
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row?.nameEn }}</td>
+        </ng-container>
+
+        <!-- SubCategory column -->
+        <ng-container matColumnDef="subCategory">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            SubCategory
+          </th>
+          <td mat-cell *matCellDef="let row" class="label label-lg">
+            {{ row?.subCategory?.nameEn || "-" }}
+          </td>
+        </ng-container>
+
+        <!-- Status column -->
+        <ng-container matColumnDef="activated">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Status
+          </th>
+          <td mat-cell *matCellDef="let row" class="label label-lg">
+            <span [activeStatus]="true" class="mr-3">{{ row?.activated }}</span>
+          </td>
+        </ng-container>
+
+        <!-- CreatedAt column -->
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Created At
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{ row?.createdAt | date: "MMMM d, h:mm a" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-cell *matCellDef="let row" class="action-link">
+            <a (click)="showEdit(row)" title="Edit" class="edit-button">
+              <mat-icon>edit</mat-icon>
+            </a>
+          </th>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      [pageSize]="15"
+      [length]="dataSource.totalCount$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
+  </nb-card-body>
+</nb-card>

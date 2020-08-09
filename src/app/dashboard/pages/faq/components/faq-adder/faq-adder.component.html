@@ -1,0 +1,89 @@
+<nb-card>
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>queue</mat-icon>
+      New FAQ
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        type="button"
+        outline
+        status="basic"
+        (click)="goBack()"
+        size="small"
+      >
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+      <button
+        nbButton
+        type="button"
+        outline
+        status="info"
+        (click)="resetForm()"
+        size="small"
+      >
+        Reset
+        <mat-icon class="ml-2">settings_backup_restore</mat-icon>
+      </button>
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [disabled]="faqAdderForm.invalid"
+        [nbSpinner]="submitLoading"
+        nbSpinnerStatus="success"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      class="example-form"
+      [formGroup]="faqAdderForm"
+      novalidate
+      autocomplete="new-password"
+    >
+      <section>
+        <div class="row mb-3">
+          <div class="col-md-12 form-section-fields">
+            <mat-form-field style="width: 100%;">
+              <mat-label>Question in arabic</mat-label>
+              <textarea matInput formControlName="titleAr" rows="3"></textarea>
+              <mat-error *ngIf="isControlHasError('titleAr', 'required')">
+                Title in arabic is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <ckeditor
+              formControlName="contentAr"
+              name="contentAr"
+              type="divarea"
+              [config]="{ height: '400' }"
+            ></ckeditor>
+
+            <mat-form-field style="width: 100%;">
+              <mat-label>Question in english</mat-label>
+              <textarea matInput formControlName="titleEn" rows="3"></textarea>
+              <mat-error *ngIf="isControlHasError('titleEn', 'required')">
+                Title in english is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <ckeditor
+              formControlName="contentEn"
+              name="contentEN"
+              type="divarea"
+              [config]="{ height: '400' }"
+            ></ckeditor>
+          </div>
+        </div>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

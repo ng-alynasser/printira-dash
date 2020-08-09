@@ -1,0 +1,66 @@
+query Options(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterOptionInput_board
+) {
+  options_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      options: items {
+        ...Option
+        prices {
+          ...OptionPricing
+        }
+        optionSet {
+          ...OptionSet
+        }
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query OptionById($optionId: String!) {
+  findOptionById(optionId: $optionId) {
+    data {
+      ...Option
+      optionSet {
+        ...OptionSet
+      }
+    }
+
+    code
+    success
+    message
+  }
+}
+
+mutation CreateOption($input: CreateOptionInput!) {
+  createOption(input: $input) {
+    message
+    code
+    success
+  }
+}
+
+mutation UpdateOption($optionId: String!, $input: UpdateOptionInput!) {
+  updateOption(optionId: $optionId, input: $input) {
+    message
+    success
+    code
+  }
+}
+
+fragment Option on Option {
+  id
+  nameAr
+  nameEn
+  thumbnail
+  activated
+  createdAt
+  updatedAt
+}

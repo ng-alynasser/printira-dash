@@ -1,0 +1,77 @@
+query Arts(
+  $sort: String
+  $paginate: PaginatorInput
+  $filter: FilterArtInput_board
+) {
+  arts_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      pageInfo {
+        ...PageInfo
+      }
+      arts: items {
+        ...Art
+        designer {
+          ...Designer
+          user {
+            ...User
+          }
+        }
+        products {
+          ...Product
+        }
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+query ArtById($artId: String!) {
+  findArtById(artId: $artId) {
+    art: data {
+      ...Art
+      designer {
+        ...Designer
+        user {
+          ...User
+        }
+      }
+      products {
+        ...Product
+      }
+    }
+
+    code
+    message
+    success
+  }
+}
+
+mutation CreateArt($input: CreateArtInput!) {
+  createArt(input: $input) {
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateArt($artId: String!, $input: UpdateArtInput!) {
+  updateArt(artId: $artId, input: $input) {
+    code
+    success
+    message
+  }
+}
+
+fragment Art on Art {
+  id
+  nameAr
+  nameEn
+  verified
+  rate
+  avatar
+  price
+  createdAt
+  updatedAt
+}

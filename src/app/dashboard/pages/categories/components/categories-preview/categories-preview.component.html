@@ -1,0 +1,34 @@
+<nb-card>
+  <nb-card-header class="preview-page">
+    <div class="preview-page__icon">
+      <mat-icon>article</mat-icon>
+      Category Preview
+    </div>
+    <div class="preview-page__buttons">
+      <button nbButton type="button" outline status="basic" size="small">
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <mat-tab-group mat-align-tabs="start">
+      <mat-tab label="Category Info">Content 1</mat-tab>
+      <mat-tab label="Sub Categories">
+        <nb-card>
+          <nb-card-header class="row subcategory-table-header">
+            <mat-form-field
+              appearance="outline"
+              class="subcategory-table-header__search"
+            >
+              <mat-label>Search for a subcategory</mat-label>
+              <input matInput #searchInput />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </nb-card-header>
+          <nb-card-body></nb-card-body>
+        </nb-card>
+      </mat-tab>
+    </mat-tab-group>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,16 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a routerLink="/" [style.display]="logoDisplay">
+      <img alt="logo" src="../../../../assets/logos/printira-logo-full.svg"/>
+    </a>
+    <a (click)="toggleSidebar()" class="sidebar-toggle">
+      <nb-icon [icon]="arrow"></nb-icon>
+    </a>
+  </div>
+</div>
+
+<nb-actions size="medium">
+  <nb-action>
+    <a (click)="onLogout()">Logout</a>
+  </nb-action>
+</nb-actions>

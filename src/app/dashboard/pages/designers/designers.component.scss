@@ -1,0 +1,116 @@
+.example-form {
+  min-width: 150px;
+  width: 90%;
+  margin: 0 auto;
+
+  > p {
+    display: inline-block;
+    color: grey;
+    margin-bottom: 1em;
+    margin-left: -1.5em;
+    font-weight: 650;
+    border-left: 5px solid grey;
+    padding-left: 10px;
+  }
+}
+
+table {
+  overflow: hidden;
+  width: 100%;
+
+  .edit-button {
+    cursor: pointer;
+    mat-icon:hover {
+      color: rgb(3, 148, 15);
+    }
+    margin-right: 5px;
+  }
+
+  .placeholder {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    margin: 8px 0;
+  }
+}
+
+.form {
+  overflow: hidden;
+  .form__title {
+    display: flex;
+    color: grey !important;
+    margin-bottom: 1em;
+    font-weight: 650;
+    align-items: center;
+
+    mat-icon {
+      align-content: center;
+      margin-right: 5px;
+    }
+  }
+  .form__inputs {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .add-address-button {
+    float: right;
+  }
+}
+
+.table-header {
+  position: relative;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+  &__icon {
+    color: whitesmoke;
+    display: flex;
+    z-index: 2;
+    justify-content: center;
+    align-items: stretch;
+    font-size: 2rem;
+    font-weight: 400;
+    mat-icon {
+      align-content: center;
+      margin-right: 10px;
+      font-size: 2rem;
+    }
+  }
+
+  &__search {
+    width: 45%;
+    padding-top: 1rem;
+  }
+
+  button {
+    mat-icon {
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.table-header::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -10px;
+  clip-path: polygon(0% 0%, 25% 0%, 28% 50%, 25% 100%, 0% 100%);
+  background-color: #eb078d;
+}
+
+.new-page::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -10px;
+  clip-path: polygon(0% 0%, 25% 0%, 28% 50%, 25% 100%, 0% 100%);
+  background-color: #eb078d;
+}

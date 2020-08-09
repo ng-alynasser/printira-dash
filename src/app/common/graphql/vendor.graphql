@@ -1,0 +1,66 @@
+query VendorsGQL($sort: String, $paginate: PaginatorInput, $filter: FilterVendorInput_board) {
+  vendors_board(sort: $sort, paginate: $paginate, filter: $filter) {
+    data {
+      vendors: items {
+        ...Vendor
+        user {
+          ...User
+        }
+        addresses {
+          ...Address
+        }
+      }
+
+      pageInfo {
+        ...PageInfo
+      }
+    }
+  }
+}
+
+mutation RegisterAsVendor($input: RegisterAsVendorInput!) {
+  registerAsVendor(input: $input) {
+    user: data {
+      ...User
+      vendor {
+        ...Vendor
+      }
+    }
+    code
+    success
+    message
+  }
+}
+
+mutation UpdateVendor($vendorId: String!, $input: UpdateVendorInput!) {
+  updateVendor(vendorId: $vendorId, input: $input) {
+    vendor: data {
+      ...Vendor
+      user {
+        ...User
+      }
+      addresses {
+        ...Address
+      }
+    }
+
+    message
+    code
+    success
+  }
+}
+
+fragment Vendor on Vendor {
+  id
+  nameAr
+  nameEn
+  activated
+  rate
+  createdAt
+  updatedAt
+}
+
+fragment VendorRequest on VendorRequest {
+  changedAt
+  status
+}

@@ -1,0 +1,180 @@
+<nb-card>
+  <nb-card-header class="new-page">
+    <div class="new-page__icon">
+      <mat-icon>loupe</mat-icon>
+      New Art
+    </div>
+    <div class="new-page__buttons">
+      <button
+        nbButton
+        type="button"
+        outline
+        status="basic"
+        (click)="goBack()"
+        size="small"
+      >
+        Back
+        <mat-icon class="ml-2">reply_all</mat-icon>
+      </button>
+      <button
+        nbButton
+        type="button"
+        outline
+        status="info"
+        (click)="resetForm()"
+        size="small"
+      >
+        Reset
+        <mat-icon class="ml-2">settings_backup_restore</mat-icon>
+      </button>
+      <button
+        nbButton
+        outline
+        type="button"
+        status="success"
+        (click)="submit()"
+        [disabled]="artAdderForm.invalid"
+        [nbSpinner]="submitLoading"
+        nbSpinnerStatus="success"
+        size="small"
+      >
+        Save and Exit
+        <mat-icon class="ml-2">save</mat-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <form
+      class="example-form"
+      [formGroup]="artAdderForm"
+      novalidate
+      autocomplete="new-password"
+    >
+      <section class="form">
+        <p class="form__title"><mat-icon>hdr_strong</mat-icon>Basic info</p>
+        <div class="row mb-3">
+          <div class="col-md-9 form__inputs">
+            <mat-form-field style="width: 40%;">
+              <mat-label>Name in arabic</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nameAr"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="isControlHasError('nameAr', 'required')">
+                Name in arabic is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 40%;">
+              <mat-label>Name in english</mat-label>
+              <input
+                matInput
+                type="text"
+                formControlName="nameEn"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="isControlHasError('nameEn', 'required')">
+                Name in english is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 80%;">
+              <mat-label>Assign a desinger by name</mat-label>
+              <input
+                matInput
+                type="text"
+                #designerSearch
+                formControlName="designer"
+                [matAutocomplete]="autoDesigner"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #autoDesigner="matAutocomplete"
+                [displayWith]="displayFnDesigners"
+              >
+                <mat-option
+                  *ngFor="let designer of designers$ | async"
+                  [value]="designer"
+                >
+                  {{ designer?.nameEn }} - {{ designer?.nameAr }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="isControlHasError('designer', 'required')">
+                Designer is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 80%;">
+              <mat-chip-list #productsList>
+                <mat-chip
+                  *ngFor="let product of productChips"
+                  [selectable]="selectable"
+                  [removable]="removable"
+                  (removed)="removeProduct(product)"
+                >
+                  {{ product }}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input
+                  placeholder="Assign products by name"
+                  #productsSearch
+                  [matAutocomplete]="auto"
+                  [matChipInputFor]="productsList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="addProduct($event)"
+                />
+              </mat-chip-list>
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selected($event)"
+              >
+                <mat-option
+                  *ngFor="let product of filteredProducts$ | async"
+                  [value]="product"
+                >
+                  {{ product.nameEn }} - {{ product.nameAr }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 upload-avatar">
+            <ng-container *ngIf="!previewImage; else previewHolder">
+              <img
+                style="width: 100%;"
+                src="../../../../../../assets/images/placeholders/jpg.svg"
+                alt="placeholder"
+              />
+            </ng-container>
+            <ng-template #previewHolder>
+              <img
+                style="width: 100%;"
+                [src]="previewImage"
+                alt="placeholder"
+                width="200"
+                height="200"
+              />
+            </ng-template>
+            <input
+              type="file"
+              #fileInput
+              (change)="uploadAvatar($event)"
+              style="display: none;"
+            />
+            <button
+              nbButton
+              type="button"
+              outline
+              fullWidth
+              size="small"
+              status="primary"
+              class="mt-2"
+              (click)="fileInput.click()"
+            >
+              Attach Thumbnail
+              <mat-icon class="ml-3">attach_file</mat-icon>
+            </button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </nb-card-body>
+</nb-card>

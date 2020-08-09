@@ -1,0 +1,13 @@
+overwrite: true
+schema: "http://backend.tjarb.com/graphql"
+documents: "src/app/**/*.graphql"
+generates:
+  src/app/common/generated-types.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-apollo-angular"
+      - "named-operations-object"
+    config:
+      namingConvention:
+        enumValues: "keep"

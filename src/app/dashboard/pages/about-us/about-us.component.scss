@@ -1,0 +1,21 @@
+.new-page::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -10px;
+  clip-path: polygon(0% 0%, 25% 0%, 28% 50%, 25% 100%, 0% 100%);
+  background-color: #eb078d;
+}
+
+.new-page__icon {
+  font-size: 2rem;
+
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.new-page__buttons {
+  align-self: center;
+}
